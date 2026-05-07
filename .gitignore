@@ -1,0 +1,9 @@
+.env.local
+.env.*.local
+.ingest_state.json
+raw/**/.*/
+.wiki_embeddings.json
+.api_audit.log
+.venv/
+__pycache__/
+*.py[cod]
