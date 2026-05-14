@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
 """
-ingest.py — LLM Wiki ingest tool (v4)
+ingest.py — LLM Wiki ingest tool (v5)
+
+Two-pass architecture:
+  Pass 1 (plan)  : one LLM call returns list of pages to create/update — no content
+  Pass 2 (write) : one focused LLM call per page — bounded output, never truncates
+  Post-write     : index.md via LLM, log.md generated locally
+
+Source content is placed in the system prompt for Pass 2, so it is cached by
+Anthropic after the first page write — subsequent pages for the same source
+pay ~10% of normal input token cost.
+
+Large files (> SPLIT_THRESHOLD bytes) are auto-split at heading boundaries.
+Semantic retrieval (Voyage AI) selects the most relevant wiki pages for context.
 
 Usage:
   python ingest.py                    # batch: all new/changed files in raw/
-  python ingest.py raw/papers/foo.md  # single file
+  python ingest.py raw/notes/foo.md   # single file
   python ingest.py --force ...        # re-ingest everything
 
 Requires:
-  pip install anthropic python-dotenv
-  ANTHROPIC_API_KEY in .env.local
-
-Large files (> SPLIT_THRESHOLD bytes) are automatically split at heading
-boundaries into a hidden .stem/ directory alongside the original file.
-On subsequent runs the split parts are used instead of the original.
-Convention: raw/notes/big-file.md → raw/notes/.big-file/part-01.md ...
+  pip install anthropic python-dotenv voyageai numpy
+  ANTHROPIC_API_KEY and VOYAGE_API_KEY in .env.local
 """
 
 import sys
@@ -33,6 +40,11 @@ from dotenv import load_dotenv
 load_dotenv(".env.local")
 
 import anthropic
+from prompts import WikiPrompts
+
+_prompts = WikiPrompts()
+
+from wiki_graph import WikiGraph
 
 try:
     from wiki_retrieval import WikiRetriever
@@ -41,7 +53,7 @@ except ImportError:
     _RETRIEVAL_AVAILABLE = False
 
 # ---------------------------------------------------------------------------
-# Audit logger  — one JSON object per line in .api_audit.log
+# Audit logger — one JSON object per line in .api_audit.log
 # ---------------------------------------------------------------------------
 
 def _setup_audit_logger(log_path: str = ".api_audit.log") -> logging.Logger:
@@ -57,7 +69,6 @@ _audit = _setup_audit_logger()
 
 
 def _log(event: str, **fields):
-    """Write one JSON audit entry to .api_audit.log."""
     entry = {"ts": datetime.now().isoformat(), "event": event, **fields}
     _audit.debug(json.dumps(entry, ensure_ascii=False))
 
@@ -65,14 +76,15 @@ def _log(event: str, **fields):
 # Config
 # ---------------------------------------------------------------------------
 
-LLM_MODEL = "claude-sonnet-4-6"
-MAX_TOKENS = 32768
-SPLIT_THRESHOLD = 40_000       # bytes; files larger than this are auto-split
+LLM_MODEL       = "claude-sonnet-4-6"
+MAX_TOKENS_PLAN = 2048    # plan is just paths + descriptions, always small
+MAX_TOKENS_PAGE = 4096    # one wiki page at a time, always fits
+SPLIT_THRESHOLD = 40_000  # bytes; files larger than this are auto-split
 
-RAW_DIR = Path("raw")
-WIKI_DIR = Path("wiki")
+RAW_DIR    = Path("raw")
+WIKI_DIR   = Path("wiki")
 SCHEMA_FILE = Path("CLAUDE.md")
-STATE_FILE = Path(".ingest_state.json")
+STATE_FILE  = Path(".ingest_state.json")
 
 RAW_EXTENSIONS = {".md", ".txt", ".rst"}
 
@@ -82,15 +94,14 @@ RAW_EXTENSIONS = {".md", ".txt", ".rst"}
 
 @dataclass
 class IngestContext:
-    path: Path                          # file being ingested (may be a split part)
+    path: Path                           # file being ingested (may be a split part)
     client: anthropic.Anthropic
-    retriever: Optional[object] = None  # WikiRetriever, if available
-    original_path: Path = None          # the unsplit source file, when path is a part
+    retriever: Optional[object] = None   # WikiRetriever, if available
+    original_path: Path = None           # unsplit source path when path is a part
     content: str = ""
     wiki_summary: str = ""
-    llm_response: str = ""
-    actions: list = field(default_factory=list)
-    written_paths: list = field(default_factory=list)  # populated by mw_apply
+    plan: dict = field(default_factory=dict)
+    written_paths: list = field(default_factory=list)
 
     def __post_init__(self):
         if self.original_path is None:
@@ -101,11 +112,7 @@ class IngestContext:
 # ---------------------------------------------------------------------------
 
 def make_pipeline(*middlewares):
-    """Return a runner that executes middlewares in order.
-
-    Each middleware: fn(ctx: IngestContext, next: Callable) -> None
-    Call next() to pass control forward; omit it to stop the chain.
-    """
+    """Each middleware: fn(ctx: IngestContext, next: Callable) -> None"""
     def run(ctx: IngestContext):
         def dispatch(i):
             if i < len(middlewares):
@@ -122,128 +129,324 @@ def mw_load_content(ctx: IngestContext, next):
     next()
 
 
-def mw_load_wiki(ctx: IngestContext, next):
+def mw_plan(ctx: IngestContext, next):
+    """Pass 1: retrieve relevant context, ask LLM what pages to create/update."""
     if ctx.retriever and ctx.retriever._index:
         ctx.wiki_summary = ctx.retriever.get_context_for_source(ctx.path)
     else:
         ctx.wiki_summary = load_wiki_context()
+
+    print("  Planning...")
+    ctx.plan = call_llm_plan(ctx.client, ctx.path, ctx.content, ctx.wiki_summary)
+
+    pages = ctx.plan.get("pages", [])
+    print(f"  Plan: {len(pages)} page(s)")
+    for p in pages:
+        print(f"    [{p['action']}] {p['path']}")
     next()
 
 
-def mw_call_llm(ctx: IngestContext, next):
+def mw_write_pages(ctx: IngestContext, next):
+    """Pass 2: one focused LLM call per page, then update index and log."""
     schema = load_schema()
-    user = build_user_prompt(
-        source_path=str(ctx.path),
-        source_content=ctx.content,
-        wiki_summary=ctx.wiki_summary,
-        original_path=str(ctx.original_path) if ctx.path != ctx.original_path else None,
-    )
-    print("  Calling LLM...")
-    ctx.llm_response = call_llm(ctx.client, schema, user)
+    source_slug = _path_to_slug(ctx.original_path)
+
+    for item in ctx.plan.get("pages", []):
+        action = item["action"].upper()
+        path   = Path(item["path"])
+        desc   = item.get("description", "")
+
+        existing = None
+        if action == "APPEND" and path.exists():
+            existing = path.read_text(encoding="utf-8", errors="replace")
+
+        print(f"  Writing {path}...")
+        try:
+            content = call_llm_write_page(
+                ctx.client, schema,
+                str(ctx.path), ctx.content,
+                action, str(path), desc, source_slug, existing,
+            )
+        except Exception as e:
+            print(f"  [WARN] Failed to write {path}: {e}")
+            continue
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if action == "CREATE":
+            path.write_text(content, encoding="utf-8")
+            print(f"  [CREATE] {path}")
+        elif action == "APPEND":
+            existing_size = path.stat().st_size if path.exists() else 0
+            with open(path, "a", encoding="utf-8") as f:
+                if existing_size > 0:
+                    f.write("\n\n")
+                f.write(content)
+            print(f"  [APPEND] {path}")
+
+        ctx.written_paths.append(str(path))
+
+    _update_index(ctx)
+    _write_log(ctx)
     next()
 
 
-def mw_parse(ctx: IngestContext, next):
-    print("  Parsing actions...")
-    ctx.actions = parse_actions(ctx.llm_response)
+def _should_skip_graph(path: str) -> bool:
+    return Path(path).name in {"index.md", "log.md"}
+
+
+def _graph_key(path: str) -> str:
+    """Strip wiki/ prefix from plan path to get the graph node key."""
+    return path[len("wiki/"):] if path.startswith("wiki/") else path
+
+
+def _infer_node_type(path: str) -> Optional[str]:
+    key = _graph_key(path)
+    for prefix, node_type in [
+        ("sources/", "source"),
+        ("concepts/", "concept"),
+        ("entities/", "entity"),
+        ("analyses/", "analysis"),
+    ]:
+        if key.startswith(prefix):
+            return node_type
+    return None
+
+
+def _infer_label(path: str) -> str:
+    return Path(path).stem.replace("-", " ").title()
+
+
+def mw_update_graph(ctx: IngestContext, next):
+    """Update the knowledge graph from the completed ingest plan."""
+    try:
+        pages = ctx.plan.get("pages", [])
+        if not pages:
+            print("  [WARN] mw_update_graph: no pages in plan, skipping")
+            next()
+            return
+
+        graph = WikiGraph.load()
+        nodes_before = len(graph.all_nodes())
+        edges_before = len(graph._edges)
+
+        # Locate the source page item
+        source_item = None
+        for p in pages:
+            if p.get("type") == "source" or _graph_key(p["path"]).startswith("sources/"):
+                source_item = p
+                break
+
+        source_key = None
+        if source_item:
+            source_key = _graph_key(source_item["path"])
+            source_label = source_item.get("label") or _infer_label(source_item["path"])
+            graph.add_node(source_key, type="source", label=source_label)
+
+        for item in pages:
+            path = item["path"]
+            if _should_skip_graph(path):
+                continue
+            key = _graph_key(path)
+            if key == source_key:
+                continue
+
+            node_type = item.get("type") or _infer_node_type(path)
+            if not node_type:
+                print(f"  [WARN] mw_update_graph: cannot infer type for {path}, skipping")
+                continue
+
+            label = item.get("label") or _infer_label(path)
+            action = item.get("action", "CREATE").upper()
+            edge_type = item.get("edge_type") or ("introduces" if action == "CREATE" else "discusses")
+
+            graph.add_node(key, type=node_type, label=label, source=source_key)
+            if source_key:
+                graph.add_edge(source_key, key, edge_type)
+
+        graph.save()
+
+        nodes_after = len(graph.all_nodes())
+        edges_after = len(graph._edges)
+        print(f"  [GRAPH] {nodes_after} nodes, {edges_after} edges "
+              f"(+{nodes_after - nodes_before} nodes, +{edges_after - edges_before} edges this ingest)")
+
+    except Exception as e:
+        print(f"  [WARN] mw_update_graph failed: {e}")
+
     next()
 
 
-def mw_apply(ctx: IngestContext, next):
-    print(f"  Applying {len(ctx.actions)} action(s)...")
-    apply_actions(ctx.actions)
-    ctx.written_paths = [
-        a["path"] for a in ctx.actions
-        if isinstance(a, dict) and a.get("action", "").upper() in ("CREATE", "UPDATE", "APPEND")
-        and "path" in a
-    ]
-    next()
-
-
-def mw_update_index(ctx: IngestContext, next):
+def mw_update_embeddings(ctx: IngestContext, next):
+    """Re-embed only the pages that changed."""
     if ctx.retriever and ctx.written_paths:
         ctx.retriever.update_index(ctx.written_paths)
     next()
 
 
-# Default pipeline — add middleware here to extend the chain
 ingest_pipeline = make_pipeline(
     mw_load_content,
-    mw_load_wiki,
-    mw_call_llm,
-    mw_parse,
-    mw_apply,
-    mw_update_index,
+    mw_plan,
+    mw_write_pages,
+    mw_update_graph,
+    mw_update_embeddings,
 )
 
 # ---------------------------------------------------------------------------
-# File splitting
+# LLM — Pass 1: planning
 # ---------------------------------------------------------------------------
 
-def split_dir_for(path: Path) -> Path:
-    """Return the hidden split directory for a raw source file.
+def call_llm_plan(
+    client: anthropic.Anthropic,
+    source_path: Path,
+    source_content: str,
+    wiki_context: str,
+) -> dict:
+    schema = load_schema()
+    system = _prompts.plan_system(schema, date.today().isoformat())
+    user = _prompts.plan_user(str(source_path), source_content, wiki_context)
 
-    raw/notes/big-file.md  →  raw/notes/.big-file/
-    """
-    return path.parent / f".{path.stem}"
+    _log("anthropic_request", call="plan", model=LLM_MODEL,
+         max_tokens=MAX_TOKENS_PLAN, source=str(source_path))
+
+    response = client.messages.create(
+        model=LLM_MODEL,
+        max_tokens=MAX_TOKENS_PLAN,
+        system=system,
+        messages=[{"role": "user", "content": user}],
+    )
+
+    usage = response.usage
+    _log("anthropic_response", call="plan",
+         input_tokens=usage.input_tokens,
+         output_tokens=usage.output_tokens,
+         cache_read_tokens=getattr(usage, "cache_read_input_tokens", 0),
+         cache_creation_tokens=getattr(usage, "cache_creation_input_tokens", 0))
+
+    text = response.content[0].text.strip()
+    # Strip markdown fences if the model wrapped the JSON anyway
+    text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.MULTILINE)
+    text = re.sub(r"\s*```$", "", text, flags=re.MULTILINE)
+
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        m = re.search(r"\{.*\}", text, re.DOTALL)
+        if m:
+            try:
+                return json.loads(m.group(0))
+            except json.JSONDecodeError:
+                pass
+    print(f"  [WARN] Could not parse plan. Preview: {text[:300]}")
+    return {"source_title": source_path.stem, "summary": "", "pages": []}
 
 
-def create_splits(source: Path) -> list[Path]:
-    """Split a large file at H1/H2 heading boundaries.
+# ---------------------------------------------------------------------------
+# LLM — Pass 2: write one page
+# ---------------------------------------------------------------------------
 
-    Writes parts to .stem/ next to the original. Wipes any existing splits
-    first so a re-ingest of a changed file starts clean.
-    Returns the ordered list of part paths.
-    """
-    sdir = split_dir_for(source)
-    if sdir.exists():
-        shutil.rmtree(sdir)
-    sdir.mkdir()
+def call_llm_write_page(
+    client: anthropic.Anthropic,
+    schema: str,
+    source_path: str,
+    source_content: str,
+    action: str,
+    page_path: str,
+    description: str,
+    source_slug: str,
+    existing_content: Optional[str] = None,
+) -> str:
+    # Source content in the system prompt — cached across all page writes for this source
+    system = _prompts.write_page_system(schema, source_path, source_content)
+    user = _prompts.write_page_user(
+        action, page_path, description, source_slug, date.today().isoformat(), existing_content
+    )
 
-    content = source.read_text(errors="replace")
+    _log("anthropic_request", call="write_page", model=LLM_MODEL,
+         max_tokens=MAX_TOKENS_PAGE, action=action, path=page_path)
 
-    # Split at every H1/H2 heading, keeping the heading with its section
-    chunks = re.split(r'(?=^#{1,2} )', content, flags=re.MULTILINE)
-    chunks = [c.strip() for c in chunks if c.strip()]
+    response = client.messages.create(
+        model=LLM_MODEL,
+        max_tokens=MAX_TOKENS_PAGE,
+        system=system,
+        messages=[{"role": "user", "content": user}],
+    )
 
-    # Fallback when there are no headings: split roughly in half at a paragraph break
-    if len(chunks) <= 1:
-        mid = len(content) // 2
-        break_at = content.rfind('\n\n', 0, mid + 2000)
-        if break_at == -1:
-            break_at = mid
-        chunks = [content[:break_at].strip(), content[break_at:].strip()]
+    usage = response.usage
+    _log("anthropic_response", call="write_page",
+         action=action, path=page_path,
+         input_tokens=usage.input_tokens,
+         output_tokens=usage.output_tokens,
+         cache_read_tokens=getattr(usage, "cache_read_input_tokens", 0),
+         cache_creation_tokens=getattr(usage, "cache_creation_input_tokens", 0))
 
-    parts = []
-    for i, chunk in enumerate(chunks, 1):
-        p = sdir / f"part-{i:02d}.md"
-        p.write_text(chunk, encoding="utf-8")
-        parts.append(p)
-
-    print(f"  [SPLIT] {source.name} → {len(parts)} parts in {sdir.name}/")
-    return parts
+    return response.content[0].text.strip()
 
 
-def resolve_ingest_paths(source: Path) -> list[Path]:
-    """Return the file(s) to actually ingest for a given raw source path.
+# ---------------------------------------------------------------------------
+# Post-write: index and log
+# ---------------------------------------------------------------------------
 
-    - If a .stem/ split directory already exists, return its parts.
-    - If the file exceeds SPLIT_THRESHOLD, create splits and return them.
-    - Otherwise return [source] unchanged.
-    """
-    sdir = split_dir_for(source)
-    if sdir.exists():
-        parts = sorted(sdir.glob("*.md"))
-        if parts:
-            print(f"  [SPLITS] {source.name} → using {len(parts)} pre-split parts")
-            return parts
-    if source.stat().st_size > SPLIT_THRESHOLD:
-        return create_splits(source)
-    return [source]
+def _update_index(ctx: IngestContext):
+    index_path = WIKI_DIR / "index.md"
+    current = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
+    schema  = load_schema()
+    pages   = ctx.plan.get("pages", [])
+
+    user = _prompts.update_index_user(
+        current, pages, ctx.plan.get("source_title", ctx.path.name)
+    )
+
+    _log("anthropic_request", call="update_index", model=LLM_MODEL,
+         max_tokens=MAX_TOKENS_PAGE)
+
+    response = ctx.client.messages.create(
+        model=LLM_MODEL,
+        max_tokens=MAX_TOKENS_PAGE,
+        system=[{"type": "text", "text": schema, "cache_control": {"type": "ephemeral"}}],
+        messages=[{"role": "user", "content": user}],
+    )
+
+    _log("anthropic_response", call="update_index",
+         input_tokens=response.usage.input_tokens,
+         output_tokens=response.usage.output_tokens)
+
+    index_path.parent.mkdir(parents=True, exist_ok=True)
+    index_path.write_text(response.content[0].text.strip(), encoding="utf-8")
+    print(f"  [UPDATE] {index_path}")
+    ctx.written_paths.append(str(index_path))
+
+
+def _write_log(ctx: IngestContext):
+    log_path = WIKI_DIR / "log.md"
+    pages   = ctx.plan.get("pages", [])
+    created = [p["path"] for p in pages if p["action"].upper() == "CREATE"]
+    updated = [p["path"] for p in pages if p["action"].upper() == "APPEND"]
+
+    lines = [f"## [{date.today().isoformat()}] ingest | {ctx.plan.get('source_title', ctx.path.name)}"]
+    lines.append(f"- Summary: {ctx.plan.get('summary', '')}")
+    if created:
+        lines.append(f"- Pages created: {', '.join(created)}")
+    if updated:
+        lines.append(f"- Pages updated: {', '.join(updated)}")
+    entry = "\n".join(lines)
+
+    existing_size = log_path.stat().st_size if log_path.exists() else 0
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(log_path, "a", encoding="utf-8") as f:
+        if existing_size > 0:
+            f.write("\n\n")
+        f.write(entry)
+    print(f"  [APPEND] {log_path}")
+    ctx.written_paths.append(str(log_path))
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _path_to_slug(path: Path) -> str:
+    name = path.stem.lower()
+    return re.sub(r"[^a-z0-9]+", "-", name).strip("-")
+
 
 def file_hash(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()[:16]
@@ -266,17 +469,16 @@ def find_raw_files() -> list[Path]:
     files = []
     for ext in RAW_EXTENSIONS:
         for f in RAW_DIR.rglob(f"*{ext}"):
-            # Exclude files whose parent directories include a hidden (.stem) dir
             rel_parts = f.relative_to(RAW_DIR).parts
-            if not any(part.startswith('.') for part in rel_parts[:-1]):
+            if not any(part.startswith(".") for part in rel_parts[:-1]):
                 files.append(f)
     return sorted(files)
 
 
 def load_wiki_context(max_chars: int = 60_000) -> str:
-    """Load index + log + as many full wiki pages as fit within max_chars."""
+    """Brute-force fallback: load index + log + pages alphabetically."""
     index_path = WIKI_DIR / "index.md"
-    log_path = WIKI_DIR / "log.md"
+    log_path   = WIKI_DIR / "log.md"
 
     parts = []
     if index_path.exists():
@@ -290,7 +492,6 @@ def load_wiki_context(max_chars: int = 60_000) -> str:
             continue
         text = p.read_text(errors="replace")
         if budget - len(text) < 0:
-            parts.append(f"=== {p} (truncated) ===\n{text[:budget]}")
             break
         parts.append(f"=== {p} ===\n{text}")
         budget -= len(text)
@@ -300,129 +501,55 @@ def load_wiki_context(max_chars: int = 60_000) -> str:
 
 def load_schema() -> str:
     if not SCHEMA_FILE.exists():
-        print(f"Warning: {SCHEMA_FILE} not found — LLM will have no schema")
+        print(f"Warning: {SCHEMA_FILE} not found")
         return ""
     return SCHEMA_FILE.read_text()
 
 # ---------------------------------------------------------------------------
-# Prompt
+# File splitting
 # ---------------------------------------------------------------------------
 
-def build_user_prompt(
-    source_path: str,
-    source_content: str,
-    wiki_summary: str,
-    original_path: str = None,
-) -> str:
-    if len(source_content) > 200_000:
-        source_content = source_content[:200_000] + "\n\n... [content truncated due to length]"
-
-    source_header = source_path
-    if original_path:
-        source_header += f"\n(Part of: {original_path})"
-
-    return f"""Ingest this source:
-
-## Source
-{source_header}
-
-## Content
-{source_content}
-
----
-
-## Current Wiki State
-{wiki_summary}
-
-Produce the JSON actions now.
-"""
-
-# ---------------------------------------------------------------------------
-# LLM call + parsing
-# ---------------------------------------------------------------------------
-
-def call_llm(client: anthropic.Anthropic, schema: str, user: str) -> str:
-    system = [
-        {
-            "type": "text",
-            "text": schema,
-            "cache_control": {"type": "ephemeral"},  # CLAUDE.md is stable across ingests
-        },
-        {
-            "type": "text",
-            "text": (
-                f"Today's date: {date.today().isoformat()}\n\n"
-                "Respond ONLY with a ```json code block containing the array of actions.\n"
-                "No explanations, no extra text."
-            ),
-        },
-    ]
-
-    request_body = {
-        "model": LLM_MODEL,
-        "max_tokens": MAX_TOKENS,
-        "system": system,
-        "messages": [{"role": "user", "content": user}],
-    }
-    _log("anthropic_request", **request_body)
-
-    with client.messages.stream(**request_body) as stream:
-        message = stream.get_final_message()
-
-    usage = message.usage
-    _log("anthropic_response",
-         model=message.model,
-         stop_reason=message.stop_reason,
-         input_tokens=usage.input_tokens,
-         output_tokens=usage.output_tokens,
-         cache_read_tokens=getattr(usage, "cache_read_input_tokens", 0),
-         cache_creation_tokens=getattr(usage, "cache_creation_input_tokens", 0))
-
-    return message.content[0].text
+def split_dir_for(path: Path) -> Path:
+    return path.parent / f".{path.stem}"
 
 
-def parse_actions(text: str) -> list[dict]:
-    patterns = [
-        r"```json\s*(.*?)\s*```",
-        r"```(?:json)?\s*(.*?)\s*```",
-        r"(\[\s*\{.*\}\s*\])",
-    ]
+def create_splits(source: Path) -> list[Path]:
+    sdir = split_dir_for(source)
+    if sdir.exists():
+        shutil.rmtree(sdir)
+    sdir.mkdir()
 
-    for pattern in patterns:
-        m = re.search(pattern, text, re.DOTALL)
-        if m:
-            try:
-                return json.loads(m.group(1).strip())
-            except (json.JSONDecodeError, ValueError):
-                continue
-    raise ValueError(f"Could not parse JSON from response. Preview:\n{text[:800]}")
+    content = source.read_text(errors="replace")
+    chunks  = re.split(r"(?=^#{1,2} )", content, flags=re.MULTILINE)
+    chunks  = [c.strip() for c in chunks if c.strip()]
+
+    if len(chunks) <= 1:
+        mid      = len(content) // 2
+        break_at = content.rfind("\n\n", 0, mid + 2000)
+        if break_at == -1:
+            break_at = mid
+        chunks = [content[:break_at].strip(), content[break_at:].strip()]
+
+    parts = []
+    for i, chunk in enumerate(chunks, 1):
+        p = sdir / f"part-{i:02d}.md"
+        p.write_text(chunk, encoding="utf-8")
+        parts.append(p)
+
+    print(f"  [SPLIT] {source.name} → {len(parts)} parts in {sdir.name}/")
+    return parts
 
 
-def apply_actions(actions: list[dict]):
-    for action in actions:
-        if not isinstance(action, dict):
-            print(f"  [WARN] Skipping unexpected item in actions: {str(action)[:80]}")
-            continue
-        if "path" not in action or "action" not in action:
-            print(f"  [WARN] Skipping malformed action (missing keys): {str(action)[:80]}")
-            continue
-        act = action.get("action", "").upper()
-        path = Path(action["path"])
-        content = action.get("content", "")
-
-        path.parent.mkdir(parents=True, exist_ok=True)
-
-        if act in ("CREATE", "UPDATE"):
-            path.write_text(content, encoding="utf-8")
-            print(f"  [{act}] {path}")
-        elif act == "APPEND":
-            with open(path, "a", encoding="utf-8") as f:
-                if path.stat().st_size > 0:
-                    f.write("\n\n")
-                f.write(content)
-            print(f"  [APPEND] {path}")
-        else:
-            print(f"  [WARN] Unknown action '{act}' for {path}")
+def resolve_ingest_paths(source: Path) -> list[Path]:
+    sdir = split_dir_for(source)
+    if sdir.exists():
+        parts = sorted(sdir.glob("*.md"))
+        if parts:
+            print(f"  [SPLITS] {source.name} → using {len(parts)} pre-split parts")
+            return parts
+    if source.stat().st_size > SPLIT_THRESHOLD:
+        return create_splits(source)
+    return [source]
 
 # ---------------------------------------------------------------------------
 # Ingest
@@ -447,29 +574,25 @@ def ingest_file(client: anthropic.Anthropic, source_path: Path, retriever=None):
 # ---------------------------------------------------------------------------
 
 def main():
-    args = sys.argv[1:]
+    args  = sys.argv[1:]
     force = "--force" in args
-    args = [a for a in args if a != "--force"]
+    args  = [a for a in args if a != "--force"]
 
     client = anthropic.Anthropic()
     print(f"Model: {LLM_MODEL}")
 
-    # Set up semantic retriever if voyageai is installed and key is present
     retriever = None
     if _RETRIEVAL_AVAILABLE and os.environ.get("VOYAGE_API_KEY"):
         retriever = WikiRetriever(wiki_dir=str(WIKI_DIR), cache_path=".wiki_embeddings.json")
         retriever.build_index()
     else:
-        if not _RETRIEVAL_AVAILABLE:
-            print("Semantic retrieval: unavailable (pip install voyageai numpy)")
-        else:
-            print("Semantic retrieval: unavailable (VOYAGE_API_KEY not set)")
-        print("Falling back to brute-force wiki context loading.")
+        reason = "pip install voyageai numpy" if not _RETRIEVAL_AVAILABLE else "VOYAGE_API_KEY not set"
+        print(f"Semantic retrieval unavailable ({reason}) — falling back to brute-force context.")
 
     state = load_state()
 
-    if args:                                  # Single file mode
-        target = Path(" ".join(args))         # join handles unquoted paths with spaces
+    if args:
+        target = Path(" ".join(args))
         if not target.exists():
             print(f"Error: {target} not found")
             sys.exit(1)
@@ -477,14 +600,15 @@ def main():
         state[str(target)] = file_hash(target)
         save_state(state)
 
-    else:                                     # Batch mode
+    else:
         files = find_raw_files()
         if not files:
             print("No files found in raw/")
             return
 
-        pending = files if force else [f for f in files if state.get(str(f)) != file_hash(f)]
-
+        pending = files if force else [
+            f for f in files if state.get(str(f)) != file_hash(f)
+        ]
         print(f"Found {len(files)} files, {len(pending)} pending.")
 
         for f in pending:
