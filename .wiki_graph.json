@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "version": 1,
+    "last_updated": "2026-05-17",
+    "node_count": 17,
+    "edge_count": 16
+  },
+  "nodes": {
+    "sources/tragic-realism-practical-training.md": {
+      "type": "source",
+      "label": "Tragic Realism: A Practical Training in Spotting Hubris and Utopian Thinking",
+      "sources": [],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/tragic-realism.md": {
+      "type": "concept",
+      "label": "Tragic Realism",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/hubris-and-nemesis.md": {
+      "type": "concept",
+      "label": "Hubris and Nemesis",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/utopian-thinking.md": {
+      "type": "concept",
+      "label": "Utopian Thinking",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/overconfidence-bias.md": {
+      "type": "concept",
+      "label": "Overconfidence Bias",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/premeditatio-malorum.md": {
+      "type": "concept",
+      "label": "Premeditatio Malorum",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/aristotle.md": {
+      "type": "entity",
+      "label": "Aristotle",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/hannah-arendt.md": {
+      "type": "entity",
+      "label": "Hannah Arendt",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/aleksandr-solzhenitsyn.md": {
+      "type": "entity",
+      "label": "Aleksandr Solzhenitsyn",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/george-orwell.md": {
+      "type": "entity",
+      "label": "George Orwell",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/aldous-huxley.md": {
+      "type": "entity",
+      "label": "Aldous Huxley",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/viktor-frankl.md": {
+      "type": "entity",
+      "label": "Viktor Frankl",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/marcus-aurelius.md": {
+      "type": "entity",
+      "label": "Marcus Aurelius",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/carl-jung.md": {
+      "type": "entity",
+      "label": "Carl Jung",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/daniel-kahneman.md": {
+      "type": "entity",
+      "label": "Daniel Kahneman",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/nassim-taleb.md": {
+      "type": "entity",
+      "label": "Nassim Taleb",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/friedrich-nietzsche.md": {
+      "type": "entity",
+      "label": "Friedrich Nietzsche",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-17",
+      "updated": "2026-05-17",
+      "consolidated": null,
+      "consolidation_version": 0
+    }
+  },
+  "edges": [
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/tragic-realism.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/hubris-and-nemesis.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/utopian-thinking.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/overconfidence-bias.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/premeditatio-malorum.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aristotle.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/hannah-arendt.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aleksandr-solzhenitsyn.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/george-orwell.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aldous-huxley.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/viktor-frankl.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/marcus-aurelius.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/carl-jung.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/daniel-kahneman.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/nassim-taleb.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/friedrich-nietzsche.md",
+      "type": "introduces",
+      "created": "2026-05-17",
+      "synthesis": null
+    }
+  ]
+}

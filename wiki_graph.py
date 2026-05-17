@@ -42,6 +42,7 @@ class GraphEdge:
     to_node: str                # relative wiki path
     type: str                   # edge type from vocabulary
     created: str                # ISO date
+    synthesis: Optional[str] = None  # filepath to analyses/ doc, relative to wiki/
 
 
 # ---------------------------------------------------------------------------
@@ -193,6 +194,10 @@ class WikiGraph:
     def out_degree(self, key: str) -> int:
         return sum(1 for e in self._edges if e.from_node == key)
 
+    def edge_count(self) -> int:
+        """Return total number of edges in the graph."""
+        return len(self._edges)
+
     def shared_sources(self, key_a: str, key_b: str) -> list[str]:
         """
         Nodes that have edges to both key_a and key_b.
@@ -215,6 +220,109 @@ class WikiGraph:
             if self.get_node(e.from_node) and self.get_node(e.from_node).type == "source"
         }
         return sorted(sources_a & sources_b)
+
+    # ------------------------------------------------------------------
+    # Edge synthesis metadata
+    # ------------------------------------------------------------------
+
+    def set_edge_synthesis(
+        self,
+        from_node: str,
+        to_node: str,
+        edge_type: str,
+        filepath: str,
+    ) -> None:
+        """
+        Set the synthesis filepath on an existing edge.
+        filepath is relative to wiki/ e.g. "analyses/shadow-buddhism.md"
+        Raises KeyError if edge does not exist.
+        """
+        for edge in self._edges:
+            if (edge.from_node == from_node
+                    and edge.to_node == to_node
+                    and edge.type == edge_type):
+                edge.synthesis = filepath
+                return
+        raise KeyError(f"Edge not found: {from_node} -[{edge_type}]-> {to_node}")
+
+    def get_edge_synthesis(
+        self,
+        from_node: str,
+        to_node: str,
+        edge_type: str,
+    ) -> Optional[str]:
+        """Return the synthesis filepath for an edge, or None if none exists."""
+        for edge in self._edges:
+            if (edge.from_node == from_node
+                    and edge.to_node == to_node
+                    and edge.type == edge_type):
+                return edge.synthesis
+        return None
+
+    def edges_needing_synthesis(
+        self,
+        min_bridge_factor: float = 1.5,
+    ) -> list[GraphEdge]:
+        """
+        Return edges that are candidates for synthesis.
+
+        Criteria:
+        - Both from_node and to_node are concept or entity nodes
+        - At least one endpoint has bridge_factor >= min_bridge_factor
+        - get_shared_sources(from_node, to_node) has >= 2 entries
+
+        Returns edges sorted by combined priority score of endpoints descending.
+        """
+        candidates = []
+        for edge in self._edges:
+            node_a = self.get_node(edge.from_node)
+            node_b = self.get_node(edge.to_node)
+            if not node_a or not node_b:
+                continue
+            if node_a.type not in ("concept", "entity"):
+                continue
+            if node_b.type not in ("concept", "entity"):
+                continue
+            bf_a = self.bridge_factor(edge.from_node)
+            bf_b = self.bridge_factor(edge.to_node)
+            if bf_a < min_bridge_factor and bf_b < min_bridge_factor:
+                continue
+            shared = self.get_shared_sources(edge.from_node, edge.to_node)
+            if len(shared) < 2:
+                continue
+            combined = self.priority_score(edge.from_node) + self.priority_score(edge.to_node)
+            candidates.append((combined, edge))
+
+        candidates.sort(key=lambda x: x[0], reverse=True)
+        return [e for _, e in candidates]
+
+    def edges_with_stale_synthesis(self) -> list[GraphEdge]:
+        """
+        Return edges that have an existing synthesis document but where
+        at least one endpoint node has been updated since the synthesis
+        was last written.
+
+        Uses file modification time of the synthesis document compared
+        to node.updated dates to determine staleness.
+        """
+        from datetime import datetime
+        result = []
+        wiki_dir = Path("wiki")
+        for edge in self._edges:
+            if not edge.synthesis:
+                continue
+            synth_path = wiki_dir / edge.synthesis
+            if not synth_path.exists():
+                continue
+            synth_date = datetime.fromtimestamp(
+                synth_path.stat().st_mtime
+            ).date().isoformat()
+            for node_key in (edge.from_node, edge.to_node):
+                node = self.get_node(node_key)
+                if node and node.updated > synth_date:
+                    result.append(edge)
+                    break
+        return result
 
     # ------------------------------------------------------------------
     # Staleness and consolidation analysis
@@ -452,6 +560,7 @@ class WikiGraph:
                     "to": edge.to_node,
                     "type": edge.type,
                     "created": edge.created,
+                    "synthesis": edge.synthesis,
                 }
                 for edge in self._edges
             ],
@@ -484,6 +593,7 @@ class WikiGraph:
                 to_node=ed["to"],
                 type=ed["type"],
                 created=ed["created"],
+                synthesis=ed.get("synthesis"),
             ))
         return g
 
@@ -592,6 +702,17 @@ class WikiGraph:
             for _, a, b, shared in threshold_pairs[:15]:
                 lines.append(f"  {a} ↔ {b}:")
                 lines.append(f"    [{', '.join(shared)}]")
+
+        # Synthesis documents
+        synth_edges = [e for e in self._edges if e.synthesis]
+        lines.append("")
+        lines.append("--- Synthesis Documents ---")
+        if not synth_edges:
+            lines.append("  (none)")
+        else:
+            for e in sorted(synth_edges, key=lambda x: x.synthesis):
+                lines.append(f"  {e.from_node} -[{e.type}]-> {e.to_node}")
+                lines.append(f"    {e.synthesis}")
 
         # Integrity
         issues = self.validate()
@@ -738,7 +859,7 @@ def _run_analysis_tests() -> None:
         f"get_shared_sources missing buddhist-principles: {shared}"
 
     # Mark consolidated and verify staleness drops
-    g.mark_consolidated("concepts/shadow.md", "2026-05-14")
+    g.mark_consolidated("concepts/shadow.md", date.today().isoformat())
     s_after = g.staleness("concepts/shadow.md")
     assert s_after == 0, f"staleness(shadow) after consolidation expected 0, got {s_after}"
 

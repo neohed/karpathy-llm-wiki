@@ -164,6 +164,10 @@ class WikiRetriever:
         else:
             print(f"[WikiRetriever] Index is up to date ({len(self._index)} pages).")
 
+    def is_ready(self) -> bool:
+        """Return True if the index has been built and contains at least one entry."""
+        return len(self._index) > 0
+
     def update_index(self, changed_paths: list[str | Path]) -> None:
         """
         Re-embed specific pages after an ingest run that modified them.

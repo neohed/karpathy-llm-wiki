@@ -1,6 +1,6 @@
 # LLM Wiki
 
-A personal knowledge base that compounds. You drop sources in; an LLM builds and maintains a structured, interlinked wiki. Based on [Karpathy's LLM Wiki pattern](karpathy-llm-wiki.md).
+A personal knowledge base that compounds. You drop sources in; an LLM builds and maintains a structured, interlinked wiki. Based on [Karpathy's LLM Wiki pattern](docs/karpathy-llm-wiki.md).
 
 ## Prerequisites
 
@@ -18,14 +18,25 @@ VOYAGE_API_KEY=pa-...
 - Anthropic key: [console.anthropic.com](https://console.anthropic.com)
 - Voyage key: [dash.voyageai.com](https://dash.voyageai.com) — used for semantic retrieval of relevant wiki pages. Without it the pipeline falls back to loading wiki pages in alphabetical order.
 
+## Verify your setup
+
+After installing dependencies and adding API keys, run the bootstrap check:
+
+```bash
+python scripts/check.py
+```
+
+This checks Python version, installed packages, API keys, all module imports, the graph self-tests, and directory structure. It exits 0 if everything is ready, non-zero with a list of failures otherwise. Run it any time something seems broken.
+
 ## Quick start
 
-**1. Create the raw/ and wiki/ directories**
+**1. Create the raw/ directory**
 
 ```bash
 mkdir -p raw/papers raw/books raw/notes raw/assets
-mkdir -p wiki/sources wiki/concepts wiki/entities wiki/analyses
 ```
+
+Wiki subdirectories (`wiki/sources/`, `wiki/concepts/`, etc.) are created automatically on first ingest.
 
 **2. Add your first source**
 
@@ -58,12 +69,14 @@ Open this directory as an Obsidian vault. Key views:
 
 ## Configuration
 
-Edit the constants at the top of `ingest.py`:
+Edit the constants in `config.py`:
 
 | Variable | Default | Description |
 |---|---|---|
 | `LLM_MODEL` | `claude-sonnet-4-6` | Claude model to use |
-| `MAX_TOKENS` | `16384` | Max output tokens per ingest |
+| `MAX_TOKENS_PLAN` | `4096` | Max tokens for the planning call |
+| `MAX_TOKENS_PAGE` | `4096` | Max tokens per page write |
+| `SPLIT_THRESHOLD` | `40000` | Characters above which a source is split into chunks |
 
 ## Re-ingest
 
@@ -75,13 +88,34 @@ python ingest.py --force raw/papers/foo.md
 python ingest.py --force
 ```
 
+## Consolidation
+
+After ingesting several sources, run consolidation periodically to synthesise cross-document insights and rewrite pages that have accumulated append sections:
+
+```bash
+# See what would be processed without writing anything
+python consolidate.py --survey
+
+# Run a consolidation pass (default depth: 5 nodes)
+python consolidate.py
+
+# Deeper pass
+python consolidate.py --depth 10
+
+# Force a specific node to the top of the queue
+python consolidate.py --pin concepts/shadow.md
+```
+
+Consolidation writes synthesis documents to `wiki/analyses/` and rewrites accumulated append sections into clean unified pages.
+
 ## Workflow
 
 ```
 raw/         ← you put sources here (immutable, never edited by LLM)
 wiki/        ← LLM writes everything here; you browse it
 CLAUDE.md    ← the schema: tells the LLM how to structure the wiki
-.env.local   ← your API key (gitignored)
+config.py    ← pipeline configuration (model, token limits, paths)
+.env.local   ← your API keys (gitignored)
 ```
 
 The wiki is a git repo. Commit `wiki/` after each ingest session for version history.
