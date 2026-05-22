@@ -1,29 +1,69 @@
 # Wiki Index
 
-## Sources
+_Last updated: 2026-05-22 — 60 pages_
 
-- [[sources/tragic-realism-practical-training|Tragic Realism: A Practical Training in Spotting Hubris and Utopian Thinking]]
+## Sources
+- [[sources/buddhist-principles]] — Buddhist Principles: Source summary page covering the document's structure: core Buddhist values (Sati, Karuna, Anatta/Anicca, Right Speech, Right Intention), their practical applications to modern challenges, and the reading list of Thich Nhat Hanh, Bhikkhu Bodhi, Tara Brach, and others (2026-05-22)
+- [[sources/burke-hayek-popper-triad]] — Overview of the Burke–Hayek–Popper Triad: Source summary page covering the three thinkers individually (biographical sketches, key works, core ideas) and their synthesis into four interlocking principles: epistemic humility, preference for evolved institutions, piecemeal reversible reform, and safeguards against tyranny (2026-05-22)
+- [[sources/framework-anti-ideological-thinking]] — Framework for Anti-Ideological Thinking: Source summary page covering: the five core skills (epistemic humility, tolerating cognitive dissonance, systems thinking, precision in language/writing as thinking, steel-manning and falsifiability testing); the content production principles (process over conclusions, non-partisan delivery rules); the intellectual anchors (Popper's falsifiability, Peterson's writing-as-thinking, Henrich's cultural evolution); and the framing of belief-updating as iterating on legacy code rather than utopian rewrites (2026-05-22)
+- [[sources/jimmy-carr-philosophy]] — Jimmy Carr Philosophy: Source summary page covering the ten-point philosophy extracted from the Triggernometry interview: agency over victimhood, gratitude as foundation, Stoic systems-focus, love of failure as learning, authenticity as competitive advantage, purpose over nihilism, comedy as social release valve, pursuit over arrival, advice for young men (real challenge over cheap dopamine), and the freedom-vs-authoritarianism political frame (2026-05-22)
+- [[sources/shadow-work]] — Shadow Work: Source summary page for this shadow work guidance document (2026-05-22)
+- [[sources/therapy-grok-survivor-tips]] — Therapy — Grok, Survivor Tips: Source summary covering the document's structure: somatic gym practices (pre/during/post-workout grounding), micro-somatic home practices (body scan, tactile anchor, somatic journaling), transition rituals for shifting from passive consumption to creative work, self-compassion practices (hand-on-heart, embodied affirmation, somatic shame release), micro-connection strategies for reducing isolation, sobriety and time management anchors, and a weekly implementation plan (2026-05-22)
+- [[sources/tragic-realism-practical-training]] — Tragic Realism: A Practical Training in Spotting Hubris and Utopian Thinking: Source page already exists and is comprehensive (2026-05-22)
 
 ## Concepts
-
-- [[concepts/hubris-and-nemesis|Hubris and Nemesis]]
-- [[concepts/overconfidence-bias|Overconfidence Bias]]
-- [[concepts/premeditatio-malorum|Premeditatio Malorum]]
-- [[concepts/tragic-realism|Tragic Realism]]
-- [[concepts/utopian-thinking|Utopian Thinking]]
+- [[concepts/acceptance-of-limits]] — Acceptance of Limits: Existing page is a stub with Carr's formulation (2026-05-22)
+- [[concepts/agency]] — Agency: Add a nuance from this source: agency in a trauma-recovery context requires physiological scaffolding, not only cognitive reframing (2026-05-22)
+- [[concepts/authenticity]] — Authenticity: Concept page for authenticity as the competitive strategy of being uniquely oneself rather than attempting to out-compete others on their own terms (2026-05-22)
+- [[concepts/compassion]] — Compassion: Concept page for compassion (Karuna) as the recognition of others' suffering coupled with the motivation to alleviate it (2026-05-22)
+- [[concepts/creative-avoidance]] — Creative Avoidance: Concept page for creative avoidance as the pattern of substituting passive consumption (binge-viewing, cheap dopamine) for creative production, driven by shame, fear of exposure, perfectionism, and hypervigilant nervous system states (2026-05-22)
+- [[concepts/epistemic-humility]] — Epistemic Humility: Add a brief note on Carr's freedom-vs-authoritarianism political frame as a practical application of epistemic humility at the political level: rejecting the left-right binary in favour of a single axis oriented around the preservation or restriction of freedom (2026-05-22)
+- [[concepts/failure-as-learning]] — Failure as Learning: Concept page for the deliberate reframing of failure as essential feedback rather than terminal verdict (2026-05-22)
+- [[concepts/falsifiability]] — Falsifiability: Concept page for Popper's falsifiability principle as an epistemic tool: a claim is meaningful only if it could in principle be shown to be false (2026-05-22)
+- [[concepts/gratitude]] — Gratitude: Add a brief note: this source offers a micro-scale somatic gratitude practice (hand-on-heart, breath, affirmation of one's own value) that operationalises gratitude at the level of the body rather than as a cognitive attitude (2026-05-22)
+- [[concepts/hamartia]] — Hamartia: Page already well-developed from this source (2026-05-22)
+- [[concepts/hubris]] — Hubris: Page already well-developed from this source (2026-05-22)
+- [[concepts/ideology-as-justification]] — Ideology as Justification: Existing page covers Solzhenitsyn and Arendt (2026-05-22)
+- [[concepts/knowledge-problem]] — Knowledge Problem: Concept page for Hayek's knowledge problem: information in society is dispersed, local, and tacit — no central authority can aggregate or act on it efficiently (2026-05-22)
+- [[concepts/mindfulness]] — Mindfulness: Add a section connecting mindfulness to somatic practice: the body scan practice in this source — scanning from toes to head, noticing sensations without judgment — is a somatic application of mindfulness (Sati) that anchors awareness in bodily sensation rather than breath (2026-05-22)
+- [[concepts/nemesis]] — Nemesis: Page already well-developed from this source (2026-05-22)
+- [[concepts/nervous-system-regulation]] — Nervous System Regulation: Concept page for nervous system regulation as the practical project of deliberately shifting the autonomic nervous system between activation states — particularly from sympathetic (fight-or-flight, hypervigilance) to parasympathetic (rest, safety, connection) (2026-05-22)
+- [[concepts/non-attachment]] — Non-Attachment: Concept page for non-attachment (rooted in Anatta and Anicca) as the practice of releasing clinging to outcomes, possessions, and fixed identities (2026-05-22)
+- [[concepts/ordered-liberty]] — Ordered Liberty: Concept page for ordered liberty as the positive programme of the Burke–Hayek–Popper triad: not reactionary nostalgia but the claim that freedom is best preserved through evolved institutional safeguards, rule of law, intermediate institutions, and robust checks on power rather than through optimised rational design (2026-05-22)
+- [[concepts/overconfidence-bias]] — Overconfidence Bias: Existing page has brief notes from other sources (2026-05-22)
+- [[concepts/persona-mask]] — Persona Mask: Concept page for the persona or social mask — the constructed identity roles (the good boy, the reliable one, the professional, the rational thinker) that people maintain at the cost of wholeness (2026-05-22)
+- [[concepts/piecemeal-social-engineering]] — Piecemeal Social Engineering: Concept page for Popper's piecemeal social engineering: reform should be modest, reversible, and testable — tackling specific ills rather than redesigning the whole society according to a utopian blueprint (2026-05-22)
+- [[concepts/premeditatio-malorum]] — Premeditatio Malorum: Existing page is a stub (2026-05-22)
+- [[concepts/purpose]] — Purpose: Concept page for purpose as the human need for meaning that transcends immediate gratification — Carr's claim that politics, religion, sports, and environmentalism often function as purpose-substitutes (2026-05-22)
+- [[concepts/right-intention]] — Right Intention: Concept page for Right Intention (Samma Sankappa) as one component of the Noble Eightfold Path (2026-05-22)
+- [[concepts/right-speech]] — Right Speech: Concept page for Right Speech (Samma Vaca) as one component of the Noble Eightfold Path (2026-05-22)
+- [[concepts/shadow-integration]] — Shadow Integration: Add a section or note on the somatic dimension of shadow work: this source provides evidence that shadow material — shame, self-doubt, fear of exposure, trauma — is held in the body, not only in cognition (2026-05-22)
+- [[concepts/shadow-self]] — Shadow Self: Existing page has Carr's victimhood framing (2026-05-22)
+- [[concepts/shame-release]] — Shame Release: Concept page for shame release as the somatic and relational process of loosening shame's grip on the body and self-concept (2026-05-22)
+- [[concepts/somatic-practice]] — Somatic Practice: Concept page for somatic practice as the use of deliberate bodily sensation, movement, and awareness to regulate the nervous system, process trauma, and build felt safety (2026-05-22)
+- [[concepts/spontaneous-order]] — Spontaneous Order: Concept page for spontaneous order as developed by Hayek: valuable social institutions (law, language, markets, moral norms) emerge through evolutionary trial-and-error rather than deliberate design, and therefore encode more distributed knowledge than any planner can possess (2026-05-22)
+- [[concepts/steel-manning]] — Steel-Manning: Concept page for steel-manning: the practice of articulating the strongest possible version of an opposing argument before testing one's own view against it (2026-05-22)
+- [[concepts/systems-thinking]] — Systems Thinking: Concept page for systems thinking as applied to social and historical analysis: mapping issues as complex adaptive systems with interacting variables, positive and negative feedback loops, and trade-offs rather than as goodies-versus-baddies narratives (2026-05-22)
+- [[concepts/tactile-anchoring]] — Tactile Anchoring: Concept page for tactile anchoring as a grounding technique that uses a specific physical object — chosen for its texture, weight, or personal significance — to interrupt dissociation, flashbacks, isolation spirals, or craving states by redirecting attention to immediate sensory experience (2026-05-22)
+- [[concepts/tragic-realism]] — Tragic Realism: Page already well-developed (2026-05-22)
+- [[concepts/utopian-thinking]] — Utopian Thinking: Existing page has a stub note from Carr (2026-05-22)
 
 ## Entities
-
-- [[entities/aldous-huxley|Aldous Huxley]]
-- [[entities/aleksandr-solzhenitsyn|Aleksandr Solzhenitsyn]]
-- [[entities/aristotle|Aristotle]]
-- [[entities/carl-jung|Carl Jung]]
-- [[entities/daniel-kahneman|Daniel Kahneman]]
-- [[entities/friedrich-nietzsche|Friedrich Nietzsche]]
-- [[entities/george-orwell|George Orwell]]
-- [[entities/hannah-arendt|Hannah Arendt]]
-- [[entities/marcus-aurelius|Marcus Aurelius]]
-- [[entities/nassim-taleb|Nassim Taleb]]
-- [[entities/viktor-frankl|Viktor Frankl]]
-
-## Analyses
+- [[entities/aldous-huxley]] — Aldous Huxley: Existing page covers his Module 3 role (2026-05-22)
+- [[entities/aleksandr-solzhenitsyn]] — Aleksandr Solzhenitsyn: Existing page covers his Module 2 role (2026-05-22)
+- [[entities/carl-jung]] — Carl Jung: Existing page has a note about integrating the '90% pure gold' quote (2026-05-22)
+- [[entities/daniel-kahneman]] — Daniel Kahneman: Existing page covers his Module 4 role (2026-05-22)
+- [[entities/edmund-burke]] — Edmund Burke: Entity page for Edmund Burke (1729–1797): Irish-born British statesman and philosopher, author of Reflections on the Revolution in France (1790) (2026-05-22)
+- [[entities/friedrich-hayek]] — Friedrich Hayek: Entity page for Friedrich Hayek (1899–1992): Austrian-British economist and social theorist, Nobel laureate 1974, author of The Road to Serfdom (1944) and The Constitution of Liberty (1960) (2026-05-22)
+- [[entities/friedrich-nietzsche]] — Friedrich Nietzsche: Existing page covers his Module 5 role (2026-05-22)
+- [[entities/george-orwell]] — George Orwell: Existing page covers his Module 3 role (2026-05-22)
+- [[entities/hannah-arendt]] — Hannah Arendt: Existing page covers Arendt's role in Module 2 (2026-05-22)
+- [[entities/jimmy-carr]] — Jimmy Carr: Entity page for Jimmy Carr as a British comedian and public intellectual whose philosophy — distilled from the Triggernometry interview — synthesises popular Stoicism, agency-over-victimhood ethics, authenticity-as-strategy, and a libertarian freedom-vs-authoritarianism political frame (2026-05-22)
+- [[entities/jordan-peterson]] — Jordan Peterson: Entity page for Jordan Peterson as the source of the 'writing as thinking' principle in the anti-ideological framework (2026-05-22)
+- [[entities/joseph-henrich]] — Joseph Henrich: Entity page for Joseph Henrich as the cultural-evolution theorist whose work underpins the framework's empirical grounding (2026-05-22)
+- [[entities/karl-popper]] — Karl Popper: Integrate the triad framing more fully: this source provides a richer account of how Popper's piecemeal social engineering fits with Burke and Hayek as parallel expressions of the same epistemic constraint (complexity exceeds the designer's knowledge) (2026-05-22)
+- [[entities/marcus-aurelius]] — Marcus Aurelius: Existing page covers his Module 5 role (2026-05-22)
+- [[entities/nassim-taleb]] — Nassim Taleb: Existing page covers his optional Module 4 role (2026-05-22)
+- [[entities/thich-nhat-hanh]] — Thich Nhat Hanh: Entity page for Thich Nhat Hanh as the most-cited author in the source's reading list (2026-05-22)
+- [[entities/viktor-frankl]] — Viktor Frankl: Existing page has a Carr cross-reference note (2026-05-22)
+- [[entities/yevgeny-zamyatin]] — Yevgeny Zamyatin: Entity page for Yevgeny Zamyatin (1884–1937): Russian novelist, author of We (1924), the earliest of the major twentieth-century dystopias and a direct influence on Orwell's 1984 (2026-05-22)

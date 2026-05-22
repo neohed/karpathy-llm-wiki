@@ -1,18 +1,13 @@
 from __future__ import annotations
+import re
 from datetime import date
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import anthropic
-
-from config import WIKI_DIR, SCHEMA_FILE, LLM_MODEL, MAX_TOKENS_PAGE
-from utils import _log
-from prompts import WikiPrompts
+from config import WIKI_DIR, SCHEMA_FILE
 
 if TYPE_CHECKING:
     from context import IngestContext
-
-_prompts = WikiPrompts()
 
 
 def load_wiki_context(max_chars: int = 60_000) -> str:
@@ -47,31 +42,82 @@ def load_schema() -> str:
 
 
 def _update_index(ctx: "IngestContext"):
+    """
+    Update wiki/index.md from ctx.plan using pure Python.
+    No LLM call — the index is structured catalog data, not prose.
+    """
     index_path = WIKI_DIR / "index.md"
-    current = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
-    schema  = load_schema()
-    pages   = ctx.plan.get("pages", [])
+    today = date.today().isoformat()
 
-    user = _prompts.update_index_user(
-        current, pages, ctx.plan.get("source_title", ctx.path.name)
-    )
+    # Section name → dict of {path_key: entry_line}
+    # Dict keying on path gives upsert behaviour — one entry per page, latest date wins
+    sections: dict[str, dict[str, str]] = {
+        "Sources":  {},
+        "Concepts": {},
+        "Entities": {},
+        "Analyses": {},
+    }
 
-    _log("anthropic_request", call="update_index", model=LLM_MODEL,
-         max_tokens=MAX_TOKENS_PAGE)
+    # Parse existing entries to preserve pages not touched in this ingest run
+    if index_path.exists():
+        current = index_path.read_text(encoding="utf-8", errors="replace")
+        current_section = None
+        for line in current.splitlines():
+            stripped = line.strip()
+            found_section = False
+            for section in sections:
+                if stripped == f"## {section}":
+                    current_section = section
+                    found_section = True
+                    break
+            if not found_section and current_section and stripped.startswith("- [["):
+                m = re.match(r"- \[\[([^\]]+)\]\]", stripped)
+                if m:
+                    key = m.group(1)
+                    sections[current_section][key] = stripped
 
-    response = ctx.client.messages.create(
-        model=LLM_MODEL,
-        max_tokens=MAX_TOKENS_PAGE,
-        system=[{"type": "text", "text": schema, "cache_control": {"type": "ephemeral"}}],
-        messages=[{"role": "user", "content": user}],
-    )
+    type_to_section = {
+        "source":   "Sources",
+        "concept":  "Concepts",
+        "entity":   "Entities",
+        "analysis": "Analyses",
+    }
 
-    _log("anthropic_response", call="update_index",
-         input_tokens=response.usage.input_tokens,
-         output_tokens=response.usage.output_tokens)
+    for item in ctx.plan.get("pages", []):
+        section = type_to_section.get(item.get("type"))
+        if not section:
+            print(f"  [WARN] _update_index: no type for {item.get('path', '?')}, skipping")
+            continue
+
+        raw_path = item.get("path", "")
+        key = raw_path
+        if key.startswith("wiki/"):
+            key = key[len("wiki/"):]
+        if key.endswith(".md"):
+            key = key[:-3]
+
+        label = item.get("label") or Path(raw_path).stem.replace("-", " ").title()
+        desc  = item.get("description", "").split(".")[0]
+        sections[section][key] = f"- [[{key}]] — {label}: {desc} ({today})"
+
+    total = sum(len(v) for v in sections.values())
+
+    lines = [
+        "# Wiki Index",
+        "",
+        f"_Last updated: {today} — {total} pages_",
+        "",
+    ]
+    for section, entries in sections.items():
+        if entries:
+            lines.append(f"## {section}")
+            lines.extend(sorted(entries.values()))
+            lines.append("")
+
+    content = "\n".join(lines).rstrip() + "\n"
 
     index_path.parent.mkdir(parents=True, exist_ok=True)
-    index_path.write_text(response.content[0].text.strip(), encoding="utf-8")
+    index_path.write_text(content, encoding="utf-8")
     print(f"  [UPDATE] {index_path}")
     ctx.written_paths.append(str(index_path))
 
@@ -80,7 +126,7 @@ def _write_log(ctx: "IngestContext"):
     log_path = WIKI_DIR / "log.md"
     pages   = ctx.plan.get("pages", [])
     created = [p["path"] for p in pages if p["action"].upper() == "CREATE"]
-    updated = [p["path"] for p in pages if p["action"].upper() == "APPEND"]
+    updated = [p["path"] for p in pages if p["action"].upper() == "UPDATE"]
 
     lines = [f"## [{date.today().isoformat()}] ingest | {ctx.plan.get('source_title', ctx.path.name)}"]
     lines.append(f"- Summary: {ctx.plan.get('summary', '')}")

@@ -2,7 +2,7 @@
 prompts.py — Prompt DAL for the LLM Wiki pipeline.
 """
 
-import json
+from pathlib import Path
 from typing import Optional
 
 
@@ -60,20 +60,24 @@ Return this exact JSON structure:
   "pages": [
     {{"action": "CREATE", "path": "wiki/sources/slug.md", "description": "what to write", "type": "source", "label": "Human Readable Title", "edge_type": "introduces"}},
     {{"action": "CREATE", "path": "wiki/concepts/name.md", "description": "what to write", "type": "concept", "label": "Concept Name", "edge_type": "introduces"}},
-    {{"action": "APPEND", "path": "wiki/entities/name.md", "description": "what new information to add", "type": "entity", "label": "Entity Name", "edge_type": "discusses"}}
+    {{"action": "UPDATE", "path": "wiki/entities/name.md", "description": "what new information to integrate", "type": "entity", "label": "Entity Name", "edge_type": "discusses"}}
   ]
 }}
 
 Rules:
 - Always include wiki/sources/<slug>.md as the first CREATE
 - CREATE for each concept or entity not yet in the wiki
-- APPEND for existing pages that have meaningful new information from this source
+- UPDATE for existing pages that have meaningful new information from this source.
+  For UPDATE actions, the existing page content will be provided — produce a
+  complete rewritten page that integrates the existing content with new information
+  from this source. Do not reproduce existing content unchanged where the new
+  source adds nothing — only integrate where there is genuine new information.
 - Do NOT include wiki/index.md or wiki/log.md — those are handled separately
 - Do NOT write page content — only paths and brief descriptions
 - Slug: lowercase, hyphens only, no punctuation
 - type: infer from path prefix — sources/→source, concepts/→concept, entities/→entity, analyses/→analysis
 - label: human-readable name, not the slug (e.g. "Carl Jung" not "carl-jung")
-- edge_type: "introduces" for CREATE, "discusses" or "refines" for APPEND; use "contradicts" or "parallels" only when genuinely applicable
+- edge_type: "introduces" for CREATE, "discusses" or "refines" for UPDATE; use "contradicts" or "parallels" only when genuinely applicable
 """
 
     def write_page_system(
@@ -81,8 +85,9 @@ Rules:
         schema: str,
         source_path: str,
         source_content: str,
+        plan_pages: list[dict] = None,
     ) -> list[dict]:
-        return [
+        blocks = [
             {"type": "text", "text": schema,
              "cache_control": {"type": "ephemeral"}},
             {"type": "text",
@@ -96,6 +101,23 @@ Rules:
                  "[[entities/carl-jung]] not [[Carl Jung]] or [[carl jung]]."
              )},
         ]
+        if plan_pages:
+            skip = {"wiki/index.md", "wiki/log.md"}
+            links = "\n".join(
+                f"  [[{Path(p['path']).relative_to('wiki').with_suffix('')}]]"
+                for p in plan_pages
+                if p.get("path") not in skip
+            )
+            blocks.append({
+                "type": "text",
+                "text": (
+                    "These are the exact WikiLinks for pages being created or updated "
+                    "in this ingest run. Use these precisely when linking to any of "
+                    "these pages — do not derive or guess:\n"
+                    f"{links}"
+                ),
+            })
+        return blocks
 
     def write_page_user(
         self,
@@ -116,19 +138,26 @@ Today's date (use for created/updated frontmatter): {today}
 Follow CLAUDE.md conventions exactly (frontmatter, WikiLinks, etc.).
 Return ONLY the markdown. No explanation, no JSON, no fences."""
 
-        else:  # APPEND
-            return f"""Write the new section to append to this wiki page.
+        else:  # UPDATE
+            return f"""Rewrite this wiki page, integrating new information from the source document.
 
 Page: {page_path}
-Description: {description}
+Description of new information to integrate: {description}
 
 Existing page content:
 {existing_content or "(page is empty)"}
 
-Return ONLY the new content to append. Begin with:
-### From [[sources/{source_slug}]] ({today})
-
-No explanation, no JSON, no fences."""
+Instructions:
+- Produce a complete, clean, unified page — not a page with appended sections
+- Integrate new information from the source document naturally into the existing
+  structure — do not add dated section headers like "### From [[sources/...]]"
+- Preserve all existing content that remains accurate and relevant
+- Where the source adds new detail to an existing section, expand that section
+- Where the source introduces a genuinely new aspect not covered, add a new section
+- Where the source contradicts existing content, resolve using the source as authority
+  and note the update inline if significant
+- Update frontmatter: set updated={today}, ensure this source is in sources: field
+- Return ONLY the complete rewritten markdown. No explanation, no JSON, no fences."""
 
     def rewrite_system(
         self,
@@ -371,20 +400,3 @@ Instructions:
   resolve the contradiction using the grounding source documents as authority
 - Return ONLY the complete rewritten markdown. No explanation, no fences."""
 
-    def update_index_user(
-        self,
-        current_index: str,
-        pages: list,
-        source_title: str,
-    ) -> str:
-        return f"""Update the wiki index to reflect this ingest.
-
-Current index:
-{current_index}
-
-Pages created or updated:
-{json.dumps(pages, indent=2)}
-
-Source ingested: {source_title}
-
-Return the complete updated index.md. Follow the existing format exactly."""

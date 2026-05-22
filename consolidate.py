@@ -32,7 +32,6 @@ import anthropic
 from config import WIKI_DIR, LLM_MODEL
 from utils import _log
 from wiki_graph import WikiGraph, GraphEdge
-from rewrite import needs_rewrite, rewrite_page
 
 DEFAULT_DEPTH = 5
 
@@ -75,28 +74,8 @@ def build_queue(
 # Pending rewrites
 # ---------------------------------------------------------------------------
 
-def pending_rewrites(graph: WikiGraph) -> list[Path]:
-    """
-    Find all wiki pages that have pending append sections and need rewriting
-    before synthesis can proceed.
-
-    Only checks concept, entity, and analysis nodes — source pages are
-    never rewritten.
-
-    Returns list of page Paths sorted by path for determinism.
-    """
-    pending = []
-    for key, node in graph.all_nodes().items():
-        if node.type == "source":
-            continue
-        page_path = WIKI_DIR / key
-        if needs_rewrite(page_path):
-            pending.append(page_path)
-    return sorted(pending)
-
-
 # ---------------------------------------------------------------------------
-# Synthesis (stub)
+# Synthesis
 # ---------------------------------------------------------------------------
 
 def synthesise_node(
@@ -206,26 +185,11 @@ def run_consolidation(
         print("Graph is empty — run ingest first.")
         return
 
-    # Step 1 — Rewrite all pages with pending append sections first
-    rewrites = pending_rewrites(graph)
-    if rewrites:
-        print(f"Pending rewrites: {len(rewrites)} page(s)")
-        for page_path in rewrites:
-            if survey:
-                print(f"  [SURVEY] would rewrite: {page_path}")
-            else:
-                success = rewrite_page(page_path, client, graph)
-                if success:
-                    # Update graph to reflect the page has been consolidated
-                    key = str(page_path.relative_to(WIKI_DIR))
-                    graph.mark_consolidated(key, date.today().isoformat())
-                    graph.save()
-    else:
-        print("No pending rewrites.")
+    # Note: rewrite phase removed — ingest now uses UPDATE not APPEND,
+    # so pages are always clean after ingest. Consolidation focuses
+    # entirely on synthesis.
 
-    print()
-
-    # Step 2 — Build priority queue
+    # Step 1 — Build priority queue
     queue = build_queue(graph, pins)
 
     if not queue:
@@ -302,7 +266,7 @@ def main():
         print("Error: ANTHROPIC_API_KEY not set in .env.local")
         sys.exit(1)
 
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(max_retries=0)
     print(f"Model: {LLM_MODEL}")
 
     run_consolidation(

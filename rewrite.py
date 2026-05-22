@@ -1,8 +1,11 @@
 """
-rewrite.py — Page rewrite utilities for the consolidation pipeline.
+rewrite.py — Page rewrite utilities.
 
-Shared by consolidate.py and future ingest middleware. No dependency on
-middleware.py, context.py, or any ingest-specific module.
+Note: as of Ticket 0d, the ingest pipeline uses UPDATE not APPEND, so
+pages no longer accumulate append sections during normal ingest runs.
+These utilities are retained for:
+- Cleaning up legacy pages with append sections
+- Potential future consolidation use cases
 """
 
 from __future__ import annotations

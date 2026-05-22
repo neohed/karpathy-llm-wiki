@@ -75,7 +75,7 @@ To add a middleware: write a function `mw_foo(ctx: IngestContext, next)`, add it
 ### Two-pass ingest
 
 Pass 1 (`mw_plan`) — one cheap LLM call returns a JSON plan: which pages to create
-or append to, with descriptions but no content. Bounded at 2048 output tokens.
+or update, with descriptions but no content. Bounded at 4096 output tokens.
 
 Pass 2 (`mw_write_pages`) — one focused LLM call per page. Source content is placed
 in the system prompt and cached by Anthropic across all page writes for the same
@@ -100,8 +100,8 @@ A separate script run periodically, not on every ingest. Three phases:
 
 1. Survey — read full wiki + graph, one LLM call produces a consolidation plan
 2. Synthesis — one LLM call per synthesis candidate, writes to `wiki/analyses/`
-3. Consolidation — one LLM call per candidate page, rewrites append-accumulations
-   as clean unified documents
+3. Consolidation — one LLM call per candidate page for hallucination drift
+   correction (pages are otherwise always clean after ingest)
 
 ---
 
@@ -177,6 +177,9 @@ no persona framing, no "you are" language.
 - No prompt strings in Python files. Use `load_prompt()`.
 - Git is the undo mechanism. Destructive operations (page rewrites, structural
   changes) must log what they changed to `wiki/log.md` before writing.
+- Before adding an LLM call, ask: is the output derivable from structured data
+  already in the pipeline? If yes, use Python. LLMs add value only where judgment,
+  synthesis, or natural language generation is genuinely required.
 
 ---
 

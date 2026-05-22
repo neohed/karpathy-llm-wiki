@@ -1,6 +1,7 @@
 from __future__ import annotations
 import json
 import re
+import time
 from datetime import date
 from pathlib import Path
 from typing import Optional
@@ -48,6 +49,23 @@ def _infer_label(path: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# LLM call with application-level retry
+# ---------------------------------------------------------------------------
+
+def _llm_call(client: anthropic.Anthropic, max_retries: int = 3, **kwargs) -> anthropic.types.Message:
+    """Call client.messages.create with explicit retry and linear backoff on connection errors."""
+    for attempt in range(max_retries):
+        try:
+            return client.messages.create(**kwargs)
+        except anthropic.APIConnectionError:
+            if attempt == max_retries - 1:
+                raise
+            wait = 10 * (attempt + 1)  # 10s, 20s, 30s
+            print(f"  [WARN] Connection error (attempt {attempt + 1}/{max_retries}), retrying in {wait}s…")
+            time.sleep(wait)
+
+
+# ---------------------------------------------------------------------------
 # LLM — Pass 1: planning
 # ---------------------------------------------------------------------------
 
@@ -64,7 +82,8 @@ def call_llm_plan(
     _log("anthropic_request", call="plan", model=LLM_MODEL,
          max_tokens=MAX_TOKENS_PLAN, source=str(source_path))
 
-    response = client.messages.create(
+    response = _llm_call(
+        client,
         model=LLM_MODEL,
         max_tokens=MAX_TOKENS_PLAN,
         system=system,
@@ -110,9 +129,10 @@ def call_llm_write_page(
     description: str,
     source_slug: str,
     existing_content: Optional[str] = None,
+    plan_pages: list[dict] = None,
 ) -> str:
     # Source content in the system prompt — cached across all page writes for this source
-    system = _prompts.write_page_system(schema, source_path, source_content)
+    system = _prompts.write_page_system(schema, source_path, source_content, plan_pages)
     user = _prompts.write_page_user(
         action, page_path, description, source_slug, date.today().isoformat(), existing_content
     )
@@ -120,7 +140,8 @@ def call_llm_write_page(
     _log("anthropic_request", call="write_page", model=LLM_MODEL,
          max_tokens=MAX_TOKENS_PAGE, action=action, path=page_path)
 
-    response = client.messages.create(
+    response = _llm_call(
+        client,
         model=LLM_MODEL,
         max_tokens=MAX_TOKENS_PAGE,
         system=system,
@@ -175,7 +196,7 @@ def mw_write_pages(ctx: IngestContext, next):
         desc   = item.get("description", "")
 
         existing = None
-        if action == "APPEND" and path.exists():
+        if action == "UPDATE" and path.exists():
             existing = path.read_text(encoding="utf-8", errors="replace")
 
         print(f"  Writing {path}...")
@@ -184,26 +205,21 @@ def mw_write_pages(ctx: IngestContext, next):
                 ctx.client, schema,
                 str(ctx.path), ctx.content,
                 action, str(path), desc, source_slug, existing,
+                plan_pages=ctx.plan.get("pages", []),
             )
         except Exception as e:
             print(f"  [WARN] Failed to write {path}: {e}")
             continue
 
         path.parent.mkdir(parents=True, exist_ok=True)
-        if action == "CREATE":
-            path.write_text(content, encoding="utf-8")
-            print(f"  [CREATE] {path}")
-        elif action == "APPEND":
-            existing_size = path.stat().st_size if path.exists() else 0
-            with open(path, "a", encoding="utf-8") as f:
-                if existing_size > 0:
-                    f.write("\n\n")
-                f.write(content)
-            print(f"  [APPEND] {path}")
-
+        path.write_text(content, encoding="utf-8")
+        print(f"  [{action}] {path}")
         ctx.written_paths.append(str(path))
 
-    _update_index(ctx)
+    try:
+        _update_index(ctx)
+    except Exception as e:
+        print(f"  [WARN] Index update failed (pages already written): {e}")
     _write_log(ctx)
     next()
 

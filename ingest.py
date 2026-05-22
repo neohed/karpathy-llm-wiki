@@ -55,7 +55,7 @@ def main():
     force = "--force" in args
     args  = [a for a in args if a != "--force"]
 
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(max_retries=0)
     print(f"Model: {LLM_MODEL}")
 
     retriever = None

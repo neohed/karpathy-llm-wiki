@@ -1,77 +1,69 @@
 ---
 title: Daniel Kahneman
 type: entity
-entity_type: person
-tags: [behavioural-economics, psychology, cognitive-bias, decision-making]
-created: 2026-05-15
-updated: 2026-05-15
-sources:
-  - "[[sources/tragic-realism-curriculum]]"
-related:
-  - "[[concepts/overconfidence-bias]]"
-  - "[[concepts/planning-fallacy]]"
-  - "[[concepts/optimism-bias]]"
-  - "[[concepts/shadow]]"
-  - "[[entities/nassim-taleb]]"
-  - "[[concepts/tragic-realism]]"
+tags: [psychologist, behavioural-economics, cognitive-bias, decision-making]
+created: 2026-05-22
+updated: 2026-05-22
+sources: [tragic-realism-practical-training]
 ---
 
 # Daniel Kahneman
 
-Israeli-American psychologist and behavioural economist (1934–2024). Nobel laureate in Economic Sciences (2002) for his work with Amos Tversky on how humans actually make decisions under uncertainty, as opposed to how rational-agent models assume they do. His career-spanning research programme mapped the systematic errors built into human cognition — errors that operate automatically, persistently, and largely beneath conscious awareness.
+Israeli-American psychologist and Nobel laureate (Economics, 2002), best known for his work on the cognitive biases and heuristics that systematically distort human judgement. His collaboration with Amos Tversky established the field of behavioural economics and produced some of the most replicated findings in psychology. His landmark popular work, *Thinking, Fast and Slow* (2011), synthesises decades of research into a widely accessible account of how and why human minds go wrong.
 
-## Core Work
+## Core Framework: System 1 and System 2
 
-*Thinking, Fast and Slow* (2011) synthesises decades of research into a two-system model of cognition:
+Kahneman organises cognition into two modes:
 
-- **System 1** — fast, automatic, associative, emotionally driven. Runs most of daily life.
-- **System 2** — slow, deliberate, effortful, logical. Invoked only when System 1 flags uncertainty or difficulty — and invoked far less often than people believe.
+- **System 1** — fast, automatic, associative, effortless. Handles routine perception and judgement. Prone to shortcuts and errors.
+- **System 2** — slow, deliberate, effortful. Capable of careful reasoning but lazy and easily overridden by System 1.
 
-The book's central practical claim is that System 2 is not the default corrector of System 1 errors. People routinely confuse the *feeling* of understanding for *actual* understanding.
+Most errors of judgement occur because System 1 generates a plausible answer and System 2 fails to check it properly.
 
 ## Relevance to Tragic Realism
 
-Kahneman's most directly applicable findings for the [[concepts/tragic-realism]] framework concern the cluster of biases that generate and sustain hubris:
+In the framework of [[concepts/tragic-realism]], Kahneman provides the psychological mechanics underlying [[concepts/hubris]]. Where the Greeks named the pattern mythically and Solzhenitsyn named it politically, Kahneman names it empirically: overreach and over-confidence are not exceptional moral failures — they are the statistical default of the human mind.
 
 ### Overconfidence Bias
-People consistently overestimate the accuracy of their own knowledge and predictions. This applies to experts as much as to laypeople — often more so. The feeling of confidence is a product of cognitive ease and narrative coherence, not of actual calibration with reality. Overconfidence is arguably the single most reliably documented bias in the literature.
 
-### Planning Fallacy
-Individuals and organisations systematically underestimate the time, cost, and obstacles involved in future projects, while overestimating the benefits. The plan feels real; the friction of execution is abstract. Projects that "cannot fail" routinely fail. This is structural hubris made quantitative.
+The most pervasive and consequential bias in Kahneman's account. Humans systematically overestimate the accuracy of their own beliefs and predictions. Experts are not immune — often they are worse, because expertise breeds subjective confidence while adding little objective accuracy in complex domains. This maps directly onto [[concepts/overconfidence-bias]] as the psychological substrate of collective [[concepts/utopian-thinking]]: the planner, the ideologue, and the revolutionary all believe they can see clearly what others miss.
+
+### The Planning Fallacy
+
+A specific form of overconfidence: the tendency to underestimate the time, cost, and risk of future actions while overestimating their benefits. Projects routinely run late and over budget. Transformational social programmes routinely produce less than promised. The planning fallacy is [[concepts/hubris]] in a spreadsheet — the belief that *this* plan, *this* intervention, *this* time, will escape the friction of reality.
 
 ### Optimism Bias
-Most people believe they are less likely than average to experience negative outcomes (divorce, illness, financial ruin, project failure). This is statistically impossible as a population-level claim. The bias is motivationally useful in small doses but catastrophic when it underpins large commitments or ideological programmes.
 
-Together these biases explain the psychological machinery behind what the [[concepts/tragic-realism]] tradition identifies as *hubris*: the Greeks diagnosed the pattern from the outside; Kahneman mapped the internal mechanism.
+The general tendency to believe one's future will be better than average, that one's risks are lower than others', and that one's projects will succeed. Individually adaptive in many contexts; collectively dangerous when it drives policy, ideology, or institutional design. Kahneman notes that optimism is "the engine of capitalism" but also the source of most business failures.
 
-## The Confidence Calibration Drill
+## Key Passage (from *Thinking, Fast and Slow*, Part 3)
 
-The [[sources/tragic-realism-curriculum]] uses a Kahneman-derived exercise as a repeatable practice for exposing personal overconfidence:
+> "The planning fallacy is only one manifestation of a pervasive optimistic bias. Most of us view the world as more benign than it really is, our own attributes as more favourable than they truly are, and the goals we adopt as more achievable than they are likely to be."
 
-1. Make ten concrete, verifiable predictions about ordinary events during the coming week — weather, task durations, sports results, social outcomes.
-2. Assign a confidence percentage to each (e.g. "70% sure this meeting ends on time").
-3. Score results at week's end. Compare stated confidence to actual accuracy rate.
+## Relation to Other Thinkers
 
-Most people find their 90%-confidence predictions correct roughly 60–70% of the time. The gap *is* the lesson. The drill is not designed to make people pessimistic but to calibrate the felt sense of certainty against evidence — which is precisely what [[concepts/tragic-realism]] requires as a daily practice.
+- Pairs with [[entities/nassim-taleb]], who extends the overconfidence thesis to systemic risk and Black Swan events — rare, high-impact outcomes that confident planners structurally ignore.
+- Complements [[entities/carl-jung]]: Kahneman describes the cognitive mechanism; Jung describes the motivational and unconscious source. Together they explain both *how* and *why* people resist updating their beliefs.
+- Grounds the theoretical critiques of [[entities/hannah-arendt]] and [[entities/aleksandr-solzhenitsyn]]: totalitarian ideology is not merely a moral aberration but an institutionalised expression of ordinary cognitive failures at scale.
 
-## Relationship to Other Thinkers
+## Practical Application
 
-Kahneman's work intersects with several figures in the corpus:
+The *Thinking, Fast and Slow* curriculum element in [[sources/tragic-realism-practical-training]] (Module 4) focuses on Part 3 — the overconfidence, planning fallacy, and optimism bias chapters — and derives a concrete **confidence calibration exercise** directly from Kahneman's method: make ten specific predictions about everyday outcomes during the week (weather, how long a task will take, a sports result, a colleague's reaction), then score accuracy at the end. The exercise is not primarily about improving prediction — it is about *experiencing* the overconfidence gap in one's own data. Most people discover they are wildly overconfident. The abstract claim becomes an embodied recognition.
 
-- **[[entities/nassim-taleb]]** — both map human blindness to risk and variance, though Taleb focuses on the extreme tail events Kahneman's experimental paradigm tends to underweight. Taleb is often publicly critical of Kahneman's policy implications while building on his empirical findings.
-- **[[entities/carl-jung]]** — where Kahneman describes the *mechanism* of self-deception (cognitive ease, narrative coherence), Jung describes its *content* (the [[concepts/shadow]], the unacknowledged material that distorts judgement). The two accounts are complementary: one is statistical and behavioural, the other is structural and psychological.
-- **[[entities/marcus-aurelius]]** and the Stoic tradition — Stoic practice anticipates the calibration imperative. *Premeditatio malorum* is pre-scientific confidence calibration: deliberately imagining failure to counteract optimism bias.
+This converts theory into the same kind of direct self-knowledge aimed at by the Stoic practice of [[concepts/premeditatio-malorum]], approached from the empirical rather than the philosophical tradition. Both methods train the same underlying capacity: honest reckoning with what is likely to go wrong.
 
-## Key Passage (Paraphrase)
-
-"Nothing in life is as important as you think it is while you are thinking about it." — Kahneman, on the *focusing illusion*, a subsidiary bias in which whatever we are currently attending to seems to dominate our assessment of wellbeing or risk. The tragic realist gloss: the plan always looks more important, more controllable, and more likely to succeed than it is, precisely because we are inside it.
+The question Kahneman trains us to ask — *What base rate am I ignoring? What could realistically go wrong that I am not admitting?* — is structurally identical to the "nemesis check" that [[concepts/nemesis]] encodes in mythological form.
 
 ## See Also
 
 - [[concepts/overconfidence-bias]]
-- [[concepts/planning-fallacy]]
 - [[concepts/hubris]]
+- [[concepts/utopian-thinking]]
 - [[concepts/tragic-realism]]
+- [[concepts/premeditatio-malorum]]
+- [[concepts/nemesis]]
 - [[entities/nassim-taleb]]
 - [[entities/carl-jung]]
-- [[sources/tragic-realism-curriculum]]
+- [[entities/hannah-arendt]]
+- [[entities/aleksandr-solzhenitsyn]]
+- [[sources/tragic-realism-practical-training]]

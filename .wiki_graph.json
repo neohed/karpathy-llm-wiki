@@ -1,17 +1,17 @@
 {
   "meta": {
     "version": 1,
-    "last_updated": "2026-05-17",
-    "node_count": 17,
-    "edge_count": 16
+    "last_updated": "2026-05-22",
+    "node_count": 60,
+    "edge_count": 92
   },
   "nodes": {
     "sources/tragic-realism-practical-training.md": {
       "type": "source",
       "label": "Tragic Realism: A Practical Training in Spotting Hubris and Utopian Thinking",
       "sources": [],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -19,21 +19,22 @@
       "type": "concept",
       "label": "Tragic Realism",
       "sources": [
-        "sources/tragic-realism-practical-training.md"
+        "sources/tragic-realism-practical-training.md",
+        "sources/burke-hayek-popper-triad.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
-    "concepts/hubris-and-nemesis.md": {
+    "concepts/hubris.md": {
       "type": "concept",
-      "label": "Hubris and Nemesis",
+      "label": "Hubris",
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -41,10 +42,24 @@
       "type": "concept",
       "label": "Utopian Thinking",
       "sources": [
+        "sources/tragic-realism-practical-training.md",
+        "sources/framework-anti-ideological-thinking.md",
+        "sources/burke-hayek-popper-triad.md",
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/nemesis.md": {
+      "type": "concept",
+      "label": "Nemesis",
+      "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -52,10 +67,46 @@
       "type": "concept",
       "label": "Overconfidence Bias",
       "sources": [
+        "sources/tragic-realism-practical-training.md",
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/shadow-self.md": {
+      "type": "concept",
+      "label": "Shadow Self",
+      "sources": [
+        "sources/tragic-realism-practical-training.md",
+        "sources/shadow-work.md",
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/hamartia.md": {
+      "type": "concept",
+      "label": "Hamartia",
+      "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/ideology-as-justification.md": {
+      "type": "concept",
+      "label": "Ideology as Justification",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -65,19 +116,21 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
-    "entities/aristotle.md": {
-      "type": "entity",
-      "label": "Aristotle",
+    "concepts/acceptance-of-limits.md": {
+      "type": "concept",
+      "label": "Acceptance of Limits",
       "sources": [
-        "sources/tragic-realism-practical-training.md"
+        "sources/tragic-realism-practical-training.md",
+        "sources/buddhist-principles.md",
+        "sources/jimmy-carr-philosophy.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -87,8 +140,8 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -98,30 +151,8 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
-      "consolidated": null,
-      "consolidation_version": 0
-    },
-    "entities/george-orwell.md": {
-      "type": "entity",
-      "label": "George Orwell",
-      "sources": [
-        "sources/tragic-realism-practical-training.md"
-      ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
-      "consolidated": null,
-      "consolidation_version": 0
-    },
-    "entities/aldous-huxley.md": {
-      "type": "entity",
-      "label": "Aldous Huxley",
-      "sources": [
-        "sources/tragic-realism-practical-training.md"
-      ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -129,10 +160,11 @@
       "type": "entity",
       "label": "Viktor Frankl",
       "sources": [
-        "sources/tragic-realism-practical-training.md"
+        "sources/tragic-realism-practical-training.md",
+        "sources/jimmy-carr-philosophy.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -142,19 +174,8 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
-      "consolidated": null,
-      "consolidation_version": 0
-    },
-    "entities/carl-jung.md": {
-      "type": "entity",
-      "label": "Carl Jung",
-      "sources": [
-        "sources/tragic-realism-practical-training.md"
-      ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -164,19 +185,42 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
-    "entities/nassim-taleb.md": {
+    "entities/carl-jung.md": {
       "type": "entity",
-      "label": "Nassim Taleb",
+      "label": "Carl Jung",
+      "sources": [
+        "sources/tragic-realism-practical-training.md",
+        "sources/shadow-work.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/george-orwell.md": {
+      "type": "entity",
+      "label": "George Orwell",
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/aldous-huxley.md": {
+      "type": "entity",
+      "label": "Aldous Huxley",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     },
@@ -186,8 +230,444 @@
       "sources": [
         "sources/tragic-realism-practical-training.md"
       ],
-      "created": "2026-05-17",
-      "updated": "2026-05-17",
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/nassim-taleb.md": {
+      "type": "entity",
+      "label": "Nassim Taleb",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/shadow-work.md": {
+      "type": "source",
+      "label": "Shadow Work",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/shadow-integration.md": {
+      "type": "concept",
+      "label": "Shadow Integration",
+      "sources": [
+        "sources/shadow-work.md",
+        "sources/buddhist-principles.md",
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/persona-mask.md": {
+      "type": "concept",
+      "label": "Persona Mask",
+      "sources": [
+        "sources/shadow-work.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/buddhist-principles.md": {
+      "type": "source",
+      "label": "Buddhist Principles",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/mindfulness.md": {
+      "type": "concept",
+      "label": "Mindfulness",
+      "sources": [
+        "sources/buddhist-principles.md",
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/non-attachment.md": {
+      "type": "concept",
+      "label": "Non-Attachment",
+      "sources": [
+        "sources/buddhist-principles.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/compassion.md": {
+      "type": "concept",
+      "label": "Compassion",
+      "sources": [
+        "sources/buddhist-principles.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/right-speech.md": {
+      "type": "concept",
+      "label": "Right Speech",
+      "sources": [
+        "sources/buddhist-principles.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/right-intention.md": {
+      "type": "concept",
+      "label": "Right Intention",
+      "sources": [
+        "sources/buddhist-principles.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/thich-nhat-hanh.md": {
+      "type": "entity",
+      "label": "Thich Nhat Hanh",
+      "sources": [
+        "sources/buddhist-principles.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/framework-anti-ideological-thinking.md": {
+      "type": "source",
+      "label": "Framework for Anti-Ideological Thinking",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/epistemic-humility.md": {
+      "type": "concept",
+      "label": "Epistemic Humility",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md",
+        "sources/burke-hayek-popper-triad.md",
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/steel-manning.md": {
+      "type": "concept",
+      "label": "Steel-Manning",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/systems-thinking.md": {
+      "type": "concept",
+      "label": "Systems Thinking",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/falsifiability.md": {
+      "type": "concept",
+      "label": "Falsifiability",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/karl-popper.md": {
+      "type": "entity",
+      "label": "Karl Popper",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md",
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/joseph-henrich.md": {
+      "type": "entity",
+      "label": "Joseph Henrich",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/jordan-peterson.md": {
+      "type": "entity",
+      "label": "Jordan Peterson",
+      "sources": [
+        "sources/framework-anti-ideological-thinking.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/burke-hayek-popper-triad.md": {
+      "type": "source",
+      "label": "Overview of the Burke–Hayek–Popper Triad",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/edmund-burke.md": {
+      "type": "entity",
+      "label": "Edmund Burke",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/friedrich-hayek.md": {
+      "type": "entity",
+      "label": "Friedrich Hayek",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/spontaneous-order.md": {
+      "type": "concept",
+      "label": "Spontaneous Order",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/knowledge-problem.md": {
+      "type": "concept",
+      "label": "Knowledge Problem",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/piecemeal-social-engineering.md": {
+      "type": "concept",
+      "label": "Piecemeal Social Engineering",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/ordered-liberty.md": {
+      "type": "concept",
+      "label": "Ordered Liberty",
+      "sources": [
+        "sources/burke-hayek-popper-triad.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/jimmy-carr-philosophy.md": {
+      "type": "source",
+      "label": "Jimmy Carr Philosophy",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/agency.md": {
+      "type": "concept",
+      "label": "Agency",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md",
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/authenticity.md": {
+      "type": "concept",
+      "label": "Authenticity",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/gratitude.md": {
+      "type": "concept",
+      "label": "Gratitude",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md",
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/failure-as-learning.md": {
+      "type": "concept",
+      "label": "Failure as Learning",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/purpose.md": {
+      "type": "concept",
+      "label": "Purpose",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/jimmy-carr.md": {
+      "type": "entity",
+      "label": "Jimmy Carr",
+      "sources": [
+        "sources/jimmy-carr-philosophy.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "sources/therapy-grok-survivor-tips.md": {
+      "type": "source",
+      "label": "Therapy — Grok, Survivor Tips",
+      "sources": [],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/somatic-practice.md": {
+      "type": "concept",
+      "label": "Somatic Practice",
+      "sources": [
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/nervous-system-regulation.md": {
+      "type": "concept",
+      "label": "Nervous System Regulation",
+      "sources": [
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/shame-release.md": {
+      "type": "concept",
+      "label": "Shame Release",
+      "sources": [
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/tactile-anchoring.md": {
+      "type": "concept",
+      "label": "Tactile Anchoring",
+      "sources": [
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "concepts/creative-avoidance.md": {
+      "type": "concept",
+      "label": "Creative Avoidance",
+      "sources": [
+        "sources/therapy-grok-survivor-tips.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
+      "consolidated": null,
+      "consolidation_version": 0
+    },
+    "entities/yevgeny-zamyatin.md": {
+      "type": "entity",
+      "label": "Yevgeny Zamyatin",
+      "sources": [
+        "sources/tragic-realism-practical-training.md"
+      ],
+      "created": "2026-05-22",
+      "updated": "2026-05-22",
       "consolidated": null,
       "consolidation_version": 0
     }
@@ -197,112 +677,644 @@
       "from": "sources/tragic-realism-practical-training.md",
       "to": "concepts/tragic-realism.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
-      "to": "concepts/hubris-and-nemesis.md",
+      "to": "concepts/hubris.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "concepts/utopian-thinking.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/nemesis.md",
+      "type": "introduces",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "concepts/overconfidence-bias.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/shadow-self.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/hamartia.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/ideology-as-justification.md",
+      "type": "introduces",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "concepts/premeditatio-malorum.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
-      "to": "entities/aristotle.md",
+      "to": "concepts/acceptance-of-limits.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/hannah-arendt.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/aleksandr-solzhenitsyn.md",
       "type": "introduces",
-      "created": "2026-05-17",
-      "synthesis": null
-    },
-    {
-      "from": "sources/tragic-realism-practical-training.md",
-      "to": "entities/george-orwell.md",
-      "type": "introduces",
-      "created": "2026-05-17",
-      "synthesis": null
-    },
-    {
-      "from": "sources/tragic-realism-practical-training.md",
-      "to": "entities/aldous-huxley.md",
-      "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/viktor-frankl.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/marcus-aurelius.md",
       "type": "introduces",
-      "created": "2026-05-17",
-      "synthesis": null
-    },
-    {
-      "from": "sources/tragic-realism-practical-training.md",
-      "to": "entities/carl-jung.md",
-      "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/daniel-kahneman.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
-      "to": "entities/nassim-taleb.md",
+      "to": "entities/carl-jung.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/george-orwell.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aldous-huxley.md",
+      "type": "introduces",
+      "created": "2026-05-22",
       "synthesis": null
     },
     {
       "from": "sources/tragic-realism-practical-training.md",
       "to": "entities/friedrich-nietzsche.md",
       "type": "introduces",
-      "created": "2026-05-17",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/nassim-taleb.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/shadow-work.md",
+      "to": "concepts/shadow-integration.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/shadow-work.md",
+      "to": "concepts/persona-mask.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/shadow-work.md",
+      "to": "concepts/shadow-self.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/shadow-work.md",
+      "to": "entities/carl-jung.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/mindfulness.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/non-attachment.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/compassion.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/right-speech.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/right-intention.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "entities/thich-nhat-hanh.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/acceptance-of-limits.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/buddhist-principles.md",
+      "to": "concepts/shadow-integration.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/epistemic-humility.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/steel-manning.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/systems-thinking.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/falsifiability.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "entities/karl-popper.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "entities/joseph-henrich.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "entities/jordan-peterson.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/utopian-thinking.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/framework-anti-ideological-thinking.md",
+      "to": "concepts/overconfidence-bias.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "entities/edmund-burke.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "entities/friedrich-hayek.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/spontaneous-order.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/knowledge-problem.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/piecemeal-social-engineering.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/ordered-liberty.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "entities/karl-popper.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/epistemic-humility.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/utopian-thinking.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/burke-hayek-popper-triad.md",
+      "to": "concepts/tragic-realism.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/agency.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/authenticity.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/gratitude.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/failure-as-learning.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/purpose.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "entities/jimmy-carr.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/utopian-thinking.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/shadow-self.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/acceptance-of-limits.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "concepts/epistemic-humility.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/jimmy-carr-philosophy.md",
+      "to": "entities/viktor-frankl.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/somatic-practice.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/nervous-system-regulation.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/shame-release.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/tactile-anchoring.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/creative-avoidance.md",
+      "type": "introduces",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/mindfulness.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/shadow-integration.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/agency.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/therapy-grok-survivor-tips.md",
+      "to": "concepts/gratitude.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/tragic-realism.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/hubris.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/nemesis.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/hamartia.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/utopian-thinking.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/ideology-as-justification.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/overconfidence-bias.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/premeditatio-malorum.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/acceptance-of-limits.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "concepts/shadow-self.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/hannah-arendt.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aleksandr-solzhenitsyn.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/viktor-frankl.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/marcus-aurelius.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/daniel-kahneman.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/carl-jung.md",
+      "type": "refines",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/george-orwell.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/aldous-huxley.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/friedrich-nietzsche.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/nassim-taleb.md",
+      "type": "discusses",
+      "created": "2026-05-22",
+      "synthesis": null
+    },
+    {
+      "from": "sources/tragic-realism-practical-training.md",
+      "to": "entities/yevgeny-zamyatin.md",
+      "type": "introduces",
+      "created": "2026-05-22",
       "synthesis": null
     }
   ]

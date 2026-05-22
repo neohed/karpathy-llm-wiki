@@ -5,7 +5,6 @@ import logging
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any
 
 from config import RAW_DIR, RAW_EXTENSIONS, STATE_FILE
 
